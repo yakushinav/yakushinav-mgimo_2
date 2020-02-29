@@ -19,7 +19,7 @@ class Menu:
         flag=0
         while flag==0:
             user_input = int(input("Ваш выбор> "))
-            if ((user_input>=1)and (user_input<=len(self.items)+1)):
+            if ((user_input>=1)and (user_input<=len(self.items))):
                 flag=1
             else:
                 print("Неверный ввод")
