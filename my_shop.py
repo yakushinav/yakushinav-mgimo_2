@@ -73,12 +73,3 @@ class MyShop:
 
 
 
-shop=MyShop("myShop.xml")
-shop.print_materials()
-
-shop.print_products()
-
-
-
-
-
