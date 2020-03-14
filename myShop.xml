@@ -107,10 +107,10 @@
 		<item>
 			<id>1</id>
 			<name>Платье с декоративными элементами</name>
-			<category_id_id>2</category_id_id>
-			<price_id>100</price_id>
+			<category_id>2</category_id>
+			<price>100</price>
 			<color_id>1</color_id>
-			<size_id>M</size_id>
+			<size>M</size>
 			<season_id>2</season_id>
 			<material_id>4</material_id>
 		</item>
@@ -118,9 +118,9 @@
 			<id>2</id>
 			<name>Сапоги на платформе</name>
 			<category_id>3</category_id>
-			<price_id>200</price_id>
+			<price>200</price>
 			<color_id>2</color_id>
-			<size_id>L</size_id>
+			<size>L</size>
 			<season_id>3</season_id>
 			<material_id>2</material_id>
 		</item>
@@ -128,9 +128,9 @@
 			<id>3</id>
 			<name>Перчатки длинные</name>
 			<category_id>4</category_id>
-			<price_id>150</price_id>
+			<price>150</price>
 			<color_id>3</color_id>
-			<size_id>А</size_id>
+			<size>А</size>
 			<season_id>3</season_id>
 			<material_id>2</material_id>
 		</item>
@@ -138,9 +138,9 @@
 			<id>4</id>
 			<name>Пальто</name>
 			<category_id>2</category_id>
-			<price_id>500</price_id>
+			<price>500</price>
 			<color_id>3</color_id>
-			<size_id>L</size_id>
+			<size>L</size>
 			<season_id>4</season_id>
 			<material_id>1</material_id>
 		</item>
