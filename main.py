@@ -17,10 +17,11 @@ while choice!=5:
     if choice==2:
         pass
     if choice==3:
-        shop = my_shop("myShop.xml")
+        shop = my_shop()
         shop.add_sample_data(20)
         shop.add_sample_orders(1000)
         df = shop.getTrainingData()
+        df.to_csv("exampleCSV.csv")
         # Создаем бота
         bot = MYBOT(shop)
         # обучаем бота

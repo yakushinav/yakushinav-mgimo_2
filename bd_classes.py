@@ -2,11 +2,10 @@ import random
 import datetime
 
 #подключаем библиотеку
-import xml.dom.minidom as minidom
 
 import pandas as pd
 
-class xml_data:
+class table_data:
     def __init__(self, table_name):
         self.__items={}
         self.__table_name=table_name
@@ -28,29 +27,20 @@ class xml_data:
         for k in self.__items.keys():
             print(k, " ".join(map(str, self.__items[k])))
 
-    def get_data_from_xml(self, dom):
+    def get_data_from_csv(self):
         pass
 
     def add_sample_data(self, count):
         pass
 
 
-class category_table(xml_data):
+class category_table(table_data):
 
+    def get_data_from_csv(self):
+        df = pd.read_csv(self.get_table_name() + ".csv")
+        for index, row in df.iterrows():
+            self.add_item(row["id"], [row["name"], row["parent"]])
 
-    def get_data_from_xml(self, dom):
-
-        pars = dom.getElementsByTagName(self.get_table_name())[0]
-
-        # Читаем элементы таблицы
-        nodes = pars.getElementsByTagName("item")
-
-        # Выводим элементы таблицы на экран
-        for node in nodes:
-            id = node.getElementsByTagName("id")[0]
-            name = node.getElementsByTagName("name")[0]
-            parent = node.getElementsByTagName("parent")[0]
-            self.add_item(int(id.firstChild.data), [name.firstChild.data, parent.firstChild.data])
 
     def add_sample_data(self, count):
         max_id=max(self.get_items().keys())+1
@@ -61,21 +51,14 @@ class category_table(xml_data):
 
 
 
-class dict_table(xml_data):
+class dict_table(table_data):
 
 
-    def get_data_from_xml(self, dom):
+    def get_data_from_csv(self):
+        df = pd.read_csv(self.get_table_name() + ".csv")
 
-        pars = dom.getElementsByTagName(self.get_table_name())[0]
-
-        # Читаем элементы таблицы
-        nodes = pars.getElementsByTagName("item")
-
-        # Выводим элементы таблицы на экран
-        for node in nodes:
-            id = node.getElementsByTagName("id")[0]
-            name = node.getElementsByTagName("name")[0]
-            self.add_item(int(id.firstChild.data), [name.firstChild.data])
+        for index, row in df.iterrows():
+            self.add_item(row["id"], [row["name"]])
 
     def add_sample_data(self, count):
         max_id=max(self.get_items().keys())+1
@@ -83,25 +66,16 @@ class dict_table(xml_data):
             name=self.get_table_name()+str(k)
             self.add_item(max_id+k, [name])
 
-class customer_table(xml_data):
+class customer_table(table_data):
 
 
-    def get_data_from_xml(self, dom):
+    def get_data_from_csv(self):
 
-        pars = dom.getElementsByTagName(self.get_table_name())[0]
+        df = pd.read_csv(self.get_table_name() + ".csv")
 
-        # Читаем элементы таблицы
-        nodes = pars.getElementsByTagName("item")
+        for index, row in df.iterrows():
+            self.add_item(row["id"], [row["firstname"], row["lastname"],int(row["age"]),row["sex"],int(row["address"])])
 
-        # Выводим элементы таблицы на экран
-        for node in nodes:
-            id = node.getElementsByTagName("id")[0]
-            firstname = node.getElementsByTagName("firstname")[0]
-            lastname = node.getElementsByTagName("lastname")[0]
-            age = node.getElementsByTagName("age")[0]
-            sex = node.getElementsByTagName("sex")[0]
-            address = node.getElementsByTagName("address")[0]
-            self.add_item(int(id.firstChild.data), [firstname.firstChild.data, lastname.firstChild.data,int(age.firstChild.data),sex.firstChild.data,int(address.firstChild.data)])
 
     def add_sample_data(self, count, city_table):
         max_id=max(self.get_items().keys())+1
@@ -116,26 +90,18 @@ class customer_table(xml_data):
             city=random.choice(list(city_table.get_items().keys()))
             self.add_item(max_id+k, [firstname, lastname, age, sex, city])
 
-class product_table(xml_data):
+class product_table(table_data):
 
-    def get_data_from_xml(self, dom):
+    def get_data_from_csv(self):
+        df = pd.read_csv(self.get_table_name() + ".csv")
 
-        pars = dom.getElementsByTagName(self.get_table_name())[0]
+        for index, row in df.iterrows():
+            self.add_item(row["id"],
+                          [row["name"], int(row["category_id"]),
+                           float(row["price"]), int(row["color_id"]),
+                           row["size"],int(row["season_id"]),
+                           int(row["material_id"])])
 
-        # Читаем элементы таблицы
-        nodes = pars.getElementsByTagName("item")
-
-        # Выводим элементы таблицы на экран
-        for node in nodes:
-            id = int(node.getElementsByTagName("id")[0].firstChild.data)
-            name = node.getElementsByTagName("name")[0].firstChild.data
-            category_id = int(node.getElementsByTagName("category_id")[0].firstChild.data)
-            price = int(node.getElementsByTagName("price")[0].firstChild.data)
-            color_id = int(node.getElementsByTagName("color_id")[0].firstChild.data)
-            size = node.getElementsByTagName("size")[0].firstChild.data
-            season_id = int(node.getElementsByTagName("season_id")[0].firstChild.data)
-            material_id = int(node.getElementsByTagName("material_id")[0].firstChild.data)
-            self.add_item(id, [name, category_id, price, color_id, size, season_id, material_id])
 
     def add_sample_data(self, count, category_table, color_table, season_table, material_table):
         max_id=max(self.get_items().keys())+1
@@ -150,54 +116,45 @@ class product_table(xml_data):
 
             self.add_item(max_id+k, [name, category, price, color, size, season, material])
 
-class order_table(xml_data):
+class order_table(table_data):
 
 
-    def get_data_from_xml(self, dom):
+    def get_data_from_csv(self):
+        df = pd.read_csv(self.get_table_name() + ".csv")
 
-        pars = dom.getElementsByTagName(self.get_table_name())[0]
-
-        # Читаем элементы таблицы
-        nodes = pars.getElementsByTagName("item")
-
-        # Выводим элементы таблицы на экран
-        for node in nodes:
-            id = node.getElementsByTagName("id")[0]
-            product_id = node.getElementsByTagName("product_id")[0]
-            customer_id = node.getElementsByTagName("customer_id")[0]
-            date = node.getElementsByTagName("date")[0]
-            self.add_item(int(id.firstChild.data), [int(product_id.firstChild.data), int(customer_id.firstChild.data),date.firstChild.data])
+        for index, row in df.iterrows():
+            self.add_item(row["id"],
+                          [int(row["product_id"]),
+                           int(row["customer_id"]), row["date"]])
 
     def add_sample_data(self, count, product_table, customer_table):
         max_id=max(self.get_items().keys())+1
         for k in range(count):
             product=random.choice(list(product_table.get_items().keys()))
             customer = random.choice(list(customer_table.get_items().keys()))
-            date=datetime.date(random.randint(2017,2020),random.randint(1,12),random.randint(1,28))
+            date=datetime.date(random.randint(2017,2021),random.randint(1,12),random.randint(1,28))
             self.add_item(max_id+k, [product, customer, date])
 
 
 class my_shop:
-    def __init__(self, filename):
+    def __init__(self):
         # читаем XML из файла
-        dom = minidom.parse(filename)
-        dom.normalize()
         self.__caterogy = category_table("category")
-        self.__caterogy.get_data_from_xml(dom)
+        self.__caterogy.get_data_from_csv()
         self.__city = dict_table("city")
-        self.__city.get_data_from_xml(dom)
+        self.__city.get_data_from_csv()
         self.__color = dict_table("color")
-        self.__color.get_data_from_xml(dom)
+        self.__color.get_data_from_csv()
         self.__customer = customer_table("customer")
-        self.__customer.get_data_from_xml(dom)
+        self.__customer.get_data_from_csv()
         self.__material = dict_table("material")
-        self.__material.get_data_from_xml(dom)
+        self.__material.get_data_from_csv()
         self.__order = order_table("order")
-        self.__order.get_data_from_xml(dom)
+        self.__order.get_data_from_csv()
         self.__product = product_table("product")
-        self.__product.get_data_from_xml(dom)
+        self.__product.get_data_from_csv()
         self.__season = dict_table("season")
-        self.__season.get_data_from_xml(dom)
+        self.__season.get_data_from_csv()
 
     def add_sample_data(self, count):
         self.__caterogy.add_sample_data(count)
@@ -207,6 +164,7 @@ class my_shop:
         self.__color.add_sample_data(count)
         self.__customer.add_sample_data(count, self.__city)
         self.__product.add_sample_data(count, self.__caterogy, self.__color, self.__season, self.__material)
+
     def add_sample_orders(self, count):
         self.__order.add_sample_data(count, self.__product, self.__customer)
 
